@@ -1,4 +1,6 @@
-import axios, {AxiosResponse} from 'axios';
+import { Attributes } from './Attributees';
+import { EventHandler } from './EventHandler';
+import { Sync } from './Sync';
 
 interface UserData {
     id?: number;
@@ -6,52 +8,12 @@ interface UserData {
     age?: number;
 }
 
-type Callback = () => void;
-
 export class User {
-    events: {[key: string]: Callback[]} = {};
+    eventHandler: EventHandler = new EventHandler();
+    sync: Sync<UserData> = new Sync('http://localhost:3000/users');
+    attributes: Attributes<UserData>;
 
-    constructor(private data: UserData){}
-
-    get(key: keyof UserData): number | string | undefined {
-        return this.data[key];
-    }
-
-    set(newData: UserData): void {
-        this.data = {...this.data, ...newData};
-    }
-
-    on(event: string, callback: Callback): void {
-        if(this.events[event]) {
-            this.events[event].push(callback);
-        } else {
-            this.events[event] = [callback];
-        }
-    }
-
-    trigger(event: string): void {
-        const handlers = this.events[event];
-
-        if(!handlers || handlers.length === 0) return;
-
-        handlers.forEach(callback => {
-            callback();
-        })
-    }
-
-    save(): void {
-        const id = this.get('id');
-
-        if(id) {
-            axios.patch(`http://localhost:3000/users/${id}`, this.data);
-        } else {
-            axios.post('http://localhost:3000/users', this.data);
-        }
-    }
-
-    fetch(): void {
-        axios.get(`http://localhost:3000/users/${this.get('id')}`).then((response: AxiosResponse): void => {
-            this.set(response.data);
-        })
+    constructor(data: UserData) {
+        this.attributes = new Attributes(data);
     }
 }
