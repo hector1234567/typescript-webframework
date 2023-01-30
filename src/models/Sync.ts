@@ -8,7 +8,7 @@ export class Sync<T extends HasId> {
 
     constructor(private rootUrl: string) {}
 
-    save(data: T): void {
+    save = (data: T): void => {
         const id = data.id;
         if(id) {
             axios.patch(`${this.rootUrl}/${id}`, data);
@@ -17,7 +17,7 @@ export class Sync<T extends HasId> {
         }
     }
 
-    fetch(id: number): AxiosPromise {
+    fetch = (id: number): AxiosPromise => {
         return axios.get(`${this.rootUrl}/${id}`);
     }
 }
