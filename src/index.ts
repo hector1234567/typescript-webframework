@@ -1,6 +1,6 @@
 import { User } from "./models/User";
 
-const user = new User({ name: 'Hector' });
+const user = User.UserFromData({ name: 'Hector' });
 
 user.on('change', () => {
     console.log('change', user);
