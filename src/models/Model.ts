@@ -28,17 +28,9 @@ export class Model<T extends HasId> {
         private attributes: ModelAttributes<T>
     ){}
 
-    get get() {
-        return this.attributes.get;
-    }
-
-    get on() {
-        return this.eventHandler.on;
-    }
-
-    get trigger() {
-        return this.eventHandler.trigger;
-    }
+    get = this.attributes.get;
+    on = this.eventHandler.on;
+    trigger = this.eventHandler.trigger;
 
     set(newData: T): void {
         this.attributes.set(newData);

@@ -1,6 +1,6 @@
 import { User } from "./models/User";
 
-const user = User.UserFromData({ name: 'Hector' });
+const user = User.buildUser({ name: 'Hector' });
 
 user.on('change', () => {
     console.log('change', user);
@@ -23,3 +23,11 @@ user.fetch()
 user.set({name: 'Nuevo'});
 
 user.save();
+
+const collection = User.buildUsersCollection();
+
+collection.on('loaded', () => {
+    console.log('loaded', collection)
+})
+
+collection.fetch();
