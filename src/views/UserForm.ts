@@ -1,7 +1,9 @@
-export class UserForm {
-    constructor(public parentElement: Element) {}
+import { User } from "../models/User";
 
-    eventsMap = (): {[key: string]: () => void} => {
+export class UserForm {
+    constructor(public parentElement: Element, public user: User) {}
+
+    eventsMap(): {[key: string]: () => void} {
         return {
             'click:button': this.onButtonClick
         }
@@ -27,6 +29,8 @@ export class UserForm {
         return `
         <div>
             <h1>User Form</h1>
+            <div>Name: ${this.user.get('name')}</div>
+            <div>Age: ${this.user.get('age')}</div>
             <input type="text"/>
             <button>Click me</button>
         </div>
