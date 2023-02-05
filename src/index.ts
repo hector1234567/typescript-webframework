@@ -1,33 +1,10 @@
-import { User } from "./models/User";
+import { UserForm } from "./views/UserForm";
 
-const user = User.buildUser({ name: 'Hector' });
+const root = document.getElementById('root');
 
-user.on('change', () => {
-    console.log('change', user);
-})
-
-user.on('save', () => {
-    console.log('save', user);
-})
-
-user.set({ age: 9999});
-
-const age = user.get('age');
-
-console.log(age);
-
-user.set({ id: 1});
-
-user.fetch()
-
-user.set({name: 'Nuevo'});
-
-user.save();
-
-const collection = User.buildUsersCollection();
-
-collection.on('loaded', () => {
-    console.log('loaded', collection)
-})
-
-collection.fetch();
+if(root) {
+    const userForm = new UserForm(root);
+    userForm.render();
+} else {
+    throw new Error('No hay root');
+}
