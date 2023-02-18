@@ -5,11 +5,18 @@ interface HasId {
 }
 
 export abstract class View<T extends Model<K>, K extends HasId> {
-    constructor(public parentElement: Element, public model: T) {}
+    public regions: {[key: string]: Element} = {};
+    constructor(public parentElement: Element, public model: T) {
+        this.bindModel();
+    }
 
     abstract template(): string;
 
     eventsMap(): {[key: string]: () => void} {
+        return {}
+    }
+
+    regionsMap(): {[key: string]: string} {
         return {}
     }
 
@@ -25,11 +32,34 @@ export abstract class View<T extends Model<K>, K extends HasId> {
         }
     }
 
+    bindModel(): void {
+        this.model.on('change', () => {
+            this.render();
+        })
+    }
+
+    mapRegions(fragment: DocumentFragment): void {
+        for(let key in this.regionsMap()) {
+            const region = fragment.querySelector(this.regionsMap()[key]);
+
+            if(region) {
+                this.regions[key] = region;
+            }
+        }
+    }
+
+    onRender(): void {}
+
     render(): void {
+        this.parentElement.innerHTML = '';
+
         const templateElement = document.createElement('template');
         templateElement.innerHTML = this.template();
 
         this.bindEvents(templateElement.content);
+        this.mapRegions(templateElement.content);
+
+        this.onRender();
 
         this.parentElement.append(templateElement.content);
     }
