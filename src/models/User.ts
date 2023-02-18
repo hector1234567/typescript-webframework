@@ -4,7 +4,7 @@ import { Model } from './Model';
 import { ApiSync } from './ApiSync';
 import { Collection } from './Collection';
 
-interface UserData {
+export interface UserData {
     id?: number;
     name?: string;
     age?: number;
