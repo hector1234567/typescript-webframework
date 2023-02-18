@@ -1,14 +1,19 @@
 import { User } from "./models/User";
 import { UserForm } from "./views/UserForm";
+import { UserList } from "./views/UserList";
 import { UserView } from "./views/UserView";
 
-const root = document.getElementById('root');
-const user = User.buildUser({id: 4});
-user.fetch();
+const userCollection = User.buildUsersCollection();
 
-if(root) {
-    const userView = new UserView(root, user);
-    userView.render();
-} else {
-    throw new Error('No hay root');
-}
+userCollection.on('loaded', () => {
+    const root = document.getElementById('root');
+
+    if(root) {
+        const userView = new UserList(root, userCollection);
+        userView.render();
+    } else {
+        throw new Error('No hay root');
+    }
+})
+
+userCollection.fetch();
