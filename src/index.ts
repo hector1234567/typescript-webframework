@@ -1,7 +1,5 @@
 import { User } from "./models/User";
-import { UserForm } from "./views/UserForm";
 import { UserList } from "./views/UserList";
-import { UserView } from "./views/UserView";
 
 const userCollection = User.buildUsersCollection();
 
